@@ -1,4 +1,5 @@
 import { 
+    signOut,
     getAuth,
     setPersistence, 
     browserSessionPersistence,
@@ -19,28 +20,17 @@ class User {
     }
 
     signin(email, password) {
-        setPersistence(this.#auth, browserSessionPersistence)
-        .then((result) => {
-            return signInWithEmailAndPassword(this.#auth, email, password)
-        })
-        .catch((error) => {
-            throw new Error(`Error ${error.code}: ${error.message}`)
+        return new Promise(async (resolve, reject) => {
+            try {
+                await setPersistence(this.#auth, browserSessionPersistence)
+
+                let userCredential = signInWithEmailAndPassword(this.#auth, email, password)
+                resolve((await userCredential).user)
+            } catch(error) {
+                reject(error)
+            }
         })
     }
-
-    // signup(email, password) {
-    //     return new Promise((resolve, reject) => {
-    //         setPersistence(this.#auth, browserSessionPersistence)
-    //         .then(async () => {
-    //             this.#constraintPassword(password)
-    //             return createUserWithEmailAndPassword(this.#auth, email, password)
-    //         })
-    //         .then((userCredential) => {
-    //             resolve(userCredential)
-    //         })
-
-    //     })
-    // }
 
     signup(email, password) {
         return new Promise(async (resolve, reject) => {
@@ -55,8 +45,18 @@ class User {
             }
         });
     }
-    
 
+    signout() {
+        return new Promise (async (resolve, reject) => {
+            try {
+                await signOut(this.#auth)
+                resolve('Signout successful.')
+            } catch (error) {
+                reject('Error signing out.')
+            }
+        })
+    }
+    
     #constraintPassword(p_password) {
         if (!StringValidator.containsLowercaseLetter(p_password)){
             throw new Error('Password must contain lower-cased characters.')

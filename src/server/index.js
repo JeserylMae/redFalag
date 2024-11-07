@@ -1,10 +1,10 @@
 import user from './users.js'
 
 
-user.signup('zamiel.mercadesjas@gmail.com', 'za@$%miel123M')
-    .then((result) => {
-        console.log(result)
+user.signup('rafael.montefalco@gmail.com', 'knoxx3434')
+    .then((userCredential) => {
+        console.log(userCredential.email)
         
-    }).catch((err) => {
-        console.log(`Error ${err.code}: ${err.mess}`)
+    }).catch((error) => {
+        console.log(error)
     })

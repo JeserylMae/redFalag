@@ -5,7 +5,7 @@ class StringValidator {
     }
 
     static containsNonNumericCharacter(p_password) {
-        return !(/[^a-zA-Z0-9]/.test(p_password))
+        return /[^a-zA-Z0-9]/.test(p_password)
     }
 }
 
